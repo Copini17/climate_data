@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+######################################################
+# API
+######################################################
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/data
+      - C:/Users/Ricardo/.kaggle:/root/.kaggle:ro
+
+######################################################
+# POSTGRES
+######################################################
+  database:
+    build: 
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    #restart: always
+    container_name: pgdatabase
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: climate_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/raw:/data/raw
+
+#  spark-master:
+#    container_name: spark-master
+#    image: bitnami/spark:latest
+#    environment:
+#      - SPARK_MODE=master
+#    ports:
+#      - "8080:8080"
+#    volumes:
+#      - ../src:/src
+#      - ../data:/data
+
+######################################################
+# SPARK
+######################################################
+#  spark-worker:
+#    container_name: spark-worker
+#    image: bitnami/spark:latest
+#    environment:
+#      - SPARK_MODE=worker
+#      - SPARK_MASTER_URL=spark://spark-master:7077
+#    depends_on:
+#      - spark-master
