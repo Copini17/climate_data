@@ -55,3 +55,40 @@ services:
 #      - SPARK_MASTER_URL=spark://spark-master:7077
 #    depends_on:
 #      - spark-master
+
+######################################################
+# AIRFLOW
+######################################################
+#  airflow:
+#    image: apache/airflow:latest
+#    environment:
+#      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+#      AIRFLOW__CORE__SQL_ALCHEMY_CONN: 'postgresql+psycopg2://airflow:airflow@postgres/airflow'
+#      AIRFLOW__CORE__EXECUTOR: 'LocalExecutor'
+#      AIRFLOW__WEBSERVER__RBAC: 'True'
+#    ports:
+#      - "8080:8080"
+#    volumes:
+#      - ./docker/airflow/dags:/opt/airflow/dags
+#      - ./docker/airflow/logs:/opt/airflow/logs
+#      - ./docker/airflow/plugins:/opt/airflow/plugins
+#    depends_on:
+#      - postgres
+#    command: >
+#      bash -c "
+#      airflow db init &&
+#      airflow users create -u admin -p admin -r Admin -e admin@example.com -f Admin -l User &&
+#      airflow webserver
+#      "
+#
+#  api:
+#    build:
+#      context: ./docker/api
+#    ports:
+#      - "5000:5000"
+#    depends_on:
+#      - postgres
+#
+#volumes:
+#  postgres_data:
+#  spark_data:
